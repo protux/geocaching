@@ -1,5 +1,7 @@
 import re
 
+from django.utils.translation import ugettext as _
+
 DECRYPTION_KEY = {
     '11': 'a',
     '12': 'b',
@@ -66,28 +68,28 @@ ENCRYPTION_KEY = {
 }
 
 def decrypt(text):
-    nums = _splitText(text)
-    decryptedText = ""
+    nums = _split_text(text)
+    decrypted_text = ""
     for num in nums:
         try:
-            decryptedText += DECRYPTION_KEY[num]
+            decrypted_text += DECRYPTION_KEY[num]
         except KeyError:
             pass
-    return decryptedText
+    return decrypted_text
     
-def _splitText(text):
+def _split_text(text):
     splitted = re.split('[^0-9]+', text)
     final = []
     for spl in splitted:
         if len(spl) > 2:
-            final += _splitLength(spl)
+            final += _split_length(spl)
         else:
             final += [spl]
     return final
             
-def _splitLength(text):
+def _split_length(text):
     if len(text) % 2 != 0:
-        raise ValueError("Error while splitting the input in pairs of two.")
+        raise ValueError(_("Error while splitting the input in pairs of two."))
     index = 0
     items = []
     while index <= len(text) - 2:
@@ -97,11 +99,11 @@ def _splitLength(text):
     
 def encrypt(text):
     text = text.lower()
-    encryptedChars = []
+    encrypted_chars = []
     for ch in text:
         try:
-            encryptedChars += [ENCRYPTION_KEY[ch]]
+            encrypted_chars += [ENCRYPTION_KEY[ch]]
         except KeyError:
             pass
-    return "".join(encryptedChars)
+    return "".join(encrypted_chars)
 
